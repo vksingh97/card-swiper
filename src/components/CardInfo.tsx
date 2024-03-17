@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Carousel } from 'antd';
 import styled from 'styled-components';
+import { CardInfoProps, CardDetails } from '../types/types';
 
 const Card = styled.div`
   width: 414px;
@@ -75,48 +77,53 @@ const CardAgentLogo = styled.img`
   margin: 0px 30px 0px 0px;
 `;
 
-const CardInfo: React.FC = () => {
-  const [showFullNumber, setShowFullNumber] = useState<boolean>(false);
-  const number = '1234567890452123';
-  const maskedNumber = number
-    ? number.slice(0, 4).replace(/(\d{1})/g, '*') +
-      '   ' +
-      number.slice(4, 8).replace(/(\d{1})/g, '*') +
-      '   ' +
-      number.slice(8, 12).replace(/(\d{1})/g, '*') +
-      '   ' +
-      number.slice(12)
-    : '---';
+const CardInfo: React.FC<CardInfoProps> = ({ showFullNumber, cardDetails }) => {
+  // const number = '1234567890452123';
+  // const maskedNumber = number
+  //   ? number.slice(0, 4).replace(/(\d{1})/g, '*') +
+  //     '   ' +
+  //     number.slice(4, 8).replace(/(\d{1})/g, '*') +
+  //     '   ' +
+  //     number.slice(8, 12).replace(/(\d{1})/g, '*') +
+  //     '   ' +
+  //     number.slice(12)
+  //   : '---';
 
-  const unmasked = number
-    ? number.slice(0, 4) +
-      '   ' +
-      number.slice(4, 8) +
-      '   ' +
-      number.slice(8, 12) +
-      '   ' +
-      number.slice(12)
-    : '---';
+  // const unmasked = number
+  //   ? number.slice(0, 4) +
+  //     '   ' +
+  //     number.slice(4, 8) +
+  //     '   ' +
+  //     number.slice(8, 12) +
+  //     '   ' +
+  //     number.slice(12)
+  //   : '---';
 
   return (
-    <Card>
-      <AspireLogoContainer>
-        <AspireLogo src='/icons/AspireLogoWhite.svg'></AspireLogo>
-      </AspireLogoContainer>
-      <CardHolderNameContainer>
-        <CardHolderName>Mark Henry</CardHolderName>
-      </CardHolderNameContainer>
-      <CardNumberContainer>
-        <CardNumber>{showFullNumber ? unmasked : maskedNumber}</CardNumber>
-      </CardNumberContainer>
-      <CardMoreInfoContainer>
-        <CardValidDate>Thru: 12/20</CardValidDate>
-        <CardCVV>CVV: ***</CardCVV>
-      </CardMoreInfoContainer>
-      <CardTransactionAgent>
-        <CardAgentLogo src='/icons/VisaLogo.svg'></CardAgentLogo>
-      </CardTransactionAgent>
-    </Card>
+    <Carousel>
+      {cardDetails.map((card: CardDetails) => (
+        <Card>
+          <AspireLogoContainer>
+            <AspireLogo src='/icons/AspireLogoWhite.svg'></AspireLogo>
+          </AspireLogoContainer>
+          <CardHolderNameContainer>
+            <CardHolderName>{card.cardHolderName}</CardHolderName>
+          </CardHolderNameContainer>
+          <CardNumberContainer>
+            <CardNumber>
+              {showFullNumber ? card.unmaskedNumber : card.maskedNumber}
+            </CardNumber>
+          </CardNumberContainer>
+          <CardMoreInfoContainer>
+            <CardValidDate>{`Thru: ${card.validDate}`}</CardValidDate>
+            <CardCVV>{`CVV: ${card.CVV}`}</CardCVV>
+          </CardMoreInfoContainer>
+          <CardTransactionAgent>
+            <CardAgentLogo src='/icons/VisaLogo.svg'></CardAgentLogo>
+          </CardTransactionAgent>
+        </Card>
+      ))}
+    </Carousel>
   );
 };
 
