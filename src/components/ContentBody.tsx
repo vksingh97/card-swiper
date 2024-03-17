@@ -2,7 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { ContentBodyProps } from '../types/types';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
-import { Layout, Button, theme } from 'antd';
+import { Layout, Button, theme, Tabs } from 'antd';
+import type { TabsProps } from 'antd';
+import MyCards from './MyCards';
 
 const { Header, Content } = Layout;
 
@@ -64,10 +66,35 @@ const NewCard = styled.p`
   font-weight: bold;
 `;
 
+const UserInfoBox = styled.div`
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.2);
+`;
+
 const ContentBody: React.FC<ContentBodyProps> = ({ collapsed, onCollapse }) => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+
+  const onChange = (key: string) => {
+    console.log(key);
+  };
+
+  const items: TabsProps['items'] = [
+    {
+      key: '1',
+      label: 'My debit cards',
+      children: (
+        <UserInfoBox>
+          <MyCards />
+        </UserInfoBox>
+      ),
+    },
+    {
+      key: '2',
+      label: 'All company cards',
+      children: 'Content of Tab Pane 2',
+    },
+  ];
 
   const handleLocalSelect = (newKey: boolean) => {
     if (onCollapse) {
@@ -123,6 +150,7 @@ const ContentBody: React.FC<ContentBodyProps> = ({ collapsed, onCollapse }) => {
             <NewCard>New card</NewCard>
           </AddNewCard>
         </MainBodyHeader>
+        <Tabs defaultActiveKey='1' items={items} onChange={onChange} />
       </Content>
     </Layout>
   );
