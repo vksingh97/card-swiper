@@ -244,10 +244,6 @@ const MyCards: React.FC<MyCardsProps> = ({
     setCurrentIndex(ind);
   };
 
-  useEffect(() => {
-    setIsFrozen(isFrozen);
-  }, [isFrozen]);
-
   const handleFreezeCard = (currentIndex: any) => {
     for (let i = 0; i < cardDetails.length; i++) {
       if (i === currentIndex) {
@@ -277,7 +273,9 @@ const MyCards: React.FC<MyCardsProps> = ({
           <CardOptions>
             <CardOptionContainer onClick={() => handleFreezeCard(currentIndex)}>
               <CardOptionLogo src='/icons/FreezeCard.svg'></CardOptionLogo>
-              <CardOptionText>Freeze Card</CardOptionText>
+              <CardOptionText>
+                {isFrozen[currentIndex] ? 'UnFreeze Card' : 'Freeze Card'}
+              </CardOptionText>
             </CardOptionContainer>
             <CardOptionContainer>
               <CardOptionLogo src='/icons/SetSpendLimit.svg'></CardOptionLogo>

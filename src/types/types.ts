@@ -34,5 +34,4 @@ export interface CardDetails {
 export interface CardProps {
   isFrozen?: boolean;
   children: React.ReactNode;
-  onChange: () => void;
 }

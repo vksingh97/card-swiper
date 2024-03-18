@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Carousel } from 'antd';
 import styled from 'styled-components';
 import { CardInfoProps, CardDetails, CardProps } from '../types/types';
@@ -85,10 +85,15 @@ const CardInfo: React.FC<CardInfoProps> = ({
   printIndex,
   isFrozenCard,
 }) => {
+  const [localIsFrozen, setLocalIsFrozen] = useState(isFrozenCard);
+
+  useEffect(() => {
+    setLocalIsFrozen(isFrozenCard);
+  }, [isFrozenCard]);
   return (
     <Carousel afterChange={(e) => printIndex(e)}>
       {cardDetails.map((card: CardDetails, index: number) => (
-        <Card isFrozen={isFrozenCard[index]} onChange={() => printIndex(index)}>
+        <Card isFrozen={localIsFrozen[index]}>
           <div>{isFrozenCard[index]}</div>
           <AspireLogoContainer>
             <AspireLogo src='/icons/AspireLogoWhite.svg'></AspireLogo>
