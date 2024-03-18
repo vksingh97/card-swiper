@@ -12,6 +12,8 @@ export interface ContentBodyProps {
 export interface CardInfoProps {
   showFullNumber: boolean;
   cardDetails: any;
+  printIndex: any;
+  isFrozenCard: Array<boolean>;
 }
 
 export interface MyCardsProps {
@@ -26,4 +28,11 @@ export interface CardDetails {
   cardHolderName: string;
   validDate: string;
   CVV: string;
+  freezed: boolean;
+}
+
+export interface CardProps {
+  isFrozen?: boolean;
+  children: React.ReactNode;
+  onChange: () => void;
 }

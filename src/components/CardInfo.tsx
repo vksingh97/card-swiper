@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Carousel } from 'antd';
 import styled from 'styled-components';
-import { CardInfoProps, CardDetails } from '../types/types';
+import { CardInfoProps, CardDetails, CardProps } from '../types/types';
 
-const Card = styled.div`
-  width: 414px;
+const Card: React.FC<CardProps> = styled.div`
+  width: 100%;
   height: 248.85px;
   background-color: #01d167;
   border-radius: 16px;
   display: flex;
   flex-direction: column;
+  opacity: ${(props) => (props.isFrozen ? 0.5 : 1)};
+  transition: opacity 0.3s ease-in-out;
 `;
 
 const AspireLogoContainer = styled.div`
@@ -77,32 +79,17 @@ const CardAgentLogo = styled.img`
   margin: 0px 30px 0px 0px;
 `;
 
-const CardInfo: React.FC<CardInfoProps> = ({ showFullNumber, cardDetails }) => {
-  // const number = '1234567890452123';
-  // const maskedNumber = number
-  //   ? number.slice(0, 4).replace(/(\d{1})/g, '*') +
-  //     '   ' +
-  //     number.slice(4, 8).replace(/(\d{1})/g, '*') +
-  //     '   ' +
-  //     number.slice(8, 12).replace(/(\d{1})/g, '*') +
-  //     '   ' +
-  //     number.slice(12)
-  //   : '---';
-
-  // const unmasked = number
-  //   ? number.slice(0, 4) +
-  //     '   ' +
-  //     number.slice(4, 8) +
-  //     '   ' +
-  //     number.slice(8, 12) +
-  //     '   ' +
-  //     number.slice(12)
-  //   : '---';
-
+const CardInfo: React.FC<CardInfoProps> = ({
+  showFullNumber,
+  cardDetails,
+  printIndex,
+  isFrozenCard,
+}) => {
   return (
-    <Carousel>
-      {cardDetails.map((card: CardDetails) => (
-        <Card>
+    <Carousel afterChange={(e) => printIndex(e)}>
+      {cardDetails.map((card: CardDetails, index: number) => (
+        <Card isFrozen={isFrozenCard[index]} onChange={() => printIndex(index)}>
+          <div>{isFrozenCard[index]}</div>
           <AspireLogoContainer>
             <AspireLogo src='/icons/AspireLogoWhite.svg'></AspireLogo>
           </AspireLogoContainer>

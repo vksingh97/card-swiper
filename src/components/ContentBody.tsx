@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { ContentBodyProps } from '../types/types';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
@@ -84,6 +84,7 @@ const ContentBody: React.FC<ContentBodyProps> = ({ collapsed, onCollapse }) => {
     maskedNumber: '',
     unmaskedNumber: '',
     id: 4,
+    freezed: false,
   });
   const [cardDetails, setCardDetails] = useState([
     {
@@ -94,6 +95,7 @@ const ContentBody: React.FC<ContentBodyProps> = ({ collapsed, onCollapse }) => {
       cardHolderName: 'Mark Henry',
       validDate: '12/20',
       CVV: '***',
+      freezed: false,
     },
     {
       id: 2,
@@ -103,6 +105,7 @@ const ContentBody: React.FC<ContentBodyProps> = ({ collapsed, onCollapse }) => {
       cardHolderName: 'John Cena',
       validDate: '06/24',
       CVV: '***',
+      freezed: true,
     },
     {
       id: 3,
@@ -112,8 +115,29 @@ const ContentBody: React.FC<ContentBodyProps> = ({ collapsed, onCollapse }) => {
       cardHolderName: 'The Rock',
       validDate: '08/27',
       CVV: '***',
+      freezed: false,
     },
   ]);
+
+  useEffect(() => {
+    // setCardDetails((prev) => prev);
+    console.log(cardDetails);
+  }, [cardDetails]);
+
+  useEffect(() => {
+    if (!isModalVisible) {
+      setNewCardDetails({
+        cardNumber: '',
+        cardHolderName: '',
+        validDate: '',
+        CVV: '',
+        maskedNumber: '',
+        unmaskedNumber: '',
+        id: 4,
+        freezed: false,
+      });
+    }
+  }, [isModalVisible]);
 
   const onChange = (key: string) => {
     console.log(key);
@@ -147,6 +171,16 @@ const ContentBody: React.FC<ContentBodyProps> = ({ collapsed, onCollapse }) => {
 
   const handleModalCancel = () => {
     setIsModalVisible(false);
+    setNewCardDetails({
+      cardNumber: '',
+      cardHolderName: '',
+      validDate: '',
+      CVV: '',
+      maskedNumber: '',
+      unmaskedNumber: '',
+      id: 4,
+      freezed: false,
+    });
   };
 
   const handleModalAdd = () => {
@@ -172,9 +206,18 @@ const ContentBody: React.FC<ContentBodyProps> = ({ collapsed, onCollapse }) => {
       : '---';
     newCardDetails.maskedNumber = maskedNumber;
     newCardDetails.unmaskedNumber = unmasked;
-    // Handle card addition logic here (e.g., call an API to add the card)
-    setCardDetails([...cardDetails, newCardDetails]); // Update card details state
+    setCardDetails([...cardDetails, newCardDetails]);
     setIsModalVisible(false);
+    setNewCardDetails({
+      cardNumber: '',
+      cardHolderName: '',
+      validDate: '',
+      CVV: '',
+      maskedNumber: '',
+      unmaskedNumber: '',
+      id: 4,
+      freezed: false,
+    });
   };
   return (
     <Layout>
@@ -281,7 +324,10 @@ const ContentBody: React.FC<ContentBodyProps> = ({ collapsed, onCollapse }) => {
           <Form.Item
             label='CVV'
             name='cvv'
-            rules={[{ required: true, message: 'Enter Cvv!' }]}
+            rules={[
+              { required: true, message: 'Enter Cvv!' },
+              { max: 3, message: 'Card number cannot exceed 3 characters!' },
+            ]}
           >
             <Input
               type='text'

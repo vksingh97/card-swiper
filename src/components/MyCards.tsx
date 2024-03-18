@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CardInfo from './CardInfo';
 import { MyCardsProps, CardDetails } from '../types/types';
@@ -18,7 +18,7 @@ const CardOptions = styled.div`
   height: 116px;
   border-radius: 16px;
   background-color: #edf3ff;
-  width: 414px;
+  width: 100%;
   margin-top: 15%;
   display: flex;
   justify-content: space-around;
@@ -45,7 +45,7 @@ const CardDetailCollapsibleContainer = styled.div`
 `;
 const CollapsibleHeader = styled.div`
   background-color: #f5f9ff;
-  width: 366px;
+  width: 100%;
   height: 72px;
   border-radius: 8px;
   margin: 10px;
@@ -53,7 +53,7 @@ const CollapsibleHeader = styled.div`
   justify-content: space-between;
 `;
 const CollapsibleBody = styled.div`
-  width: 366px;
+  width: 100%;
   border-radius: 8px;
   margin: 10px;
   background-color: #ffffff;
@@ -160,7 +160,7 @@ const TransactionTypeLogoCheckContainer = styled.div`
 `;
 
 const ViewAllTransactionContainer = styled.div`
-  width: 366px;
+  width: 100%;
   height: 50px;
   background-color: #edfff5;
   border: 1px solid #ddffec;
@@ -196,6 +196,10 @@ const MyCards: React.FC<MyCardsProps> = ({
   const [collapsed, setCollapsed] = useState<boolean>(true);
   const [defaultCollapsible, setDefaultCollapsible] = useState<Number>(2);
   const [showFullNumber, setShowFullNumber] = useState<boolean>(false);
+  const [isFrozen, setIsFrozen] = useState(
+    cardDetails.map((item) => item.freezed)
+  );
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const transactionData = [
     {
@@ -236,6 +240,24 @@ const MyCards: React.FC<MyCardsProps> = ({
     },
   ];
 
+  const printIndex = (ind: any) => {
+    setCurrentIndex(ind);
+  };
+
+  useEffect(() => {
+    setIsFrozen(isFrozen);
+  }, [isFrozen]);
+
+  const handleFreezeCard = (currentIndex: any) => {
+    for (let i = 0; i < cardDetails.length; i++) {
+      if (i === currentIndex) {
+        isFrozen[i] = !isFrozen[i];
+        cardDetails[i].freezed = !isFrozen[i];
+        setIsFrozen(isFrozen);
+      }
+    }
+  };
+
   return (
     <div>
       <ShowCardNumberContainer
@@ -246,9 +268,14 @@ const MyCards: React.FC<MyCardsProps> = ({
       </ShowCardNumberContainer>
       <MyCardsBody>
         <MyCardsLeftSection>
-          <CardInfo showFullNumber={showFullNumber} cardDetails={cardDetails} />
+          <CardInfo
+            showFullNumber={showFullNumber}
+            cardDetails={cardDetails}
+            printIndex={printIndex}
+            isFrozenCard={isFrozen}
+          />
           <CardOptions>
-            <CardOptionContainer>
+            <CardOptionContainer onClick={() => handleFreezeCard(currentIndex)}>
               <CardOptionLogo src='/icons/FreezeCard.svg'></CardOptionLogo>
               <CardOptionText>Freeze Card</CardOptionText>
             </CardOptionContainer>
