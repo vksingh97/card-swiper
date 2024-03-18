@@ -71,7 +71,11 @@ const UserInfoBox = styled.div`
   box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.2);
 `;
 
-const ContentBody: React.FC<ContentBodyProps> = ({ collapsed, onCollapse }) => {
+const ContentBody: React.FC<ContentBodyProps> = ({
+  collapsed,
+  onCollapse,
+  selectedKey,
+}) => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -118,11 +122,6 @@ const ContentBody: React.FC<ContentBodyProps> = ({ collapsed, onCollapse }) => {
       freezed: false,
     },
   ]);
-
-  useEffect(() => {
-    // setCardDetails((prev) => prev);
-    console.log(cardDetails);
-  }, [cardDetails]);
 
   useEffect(() => {
     if (!isModalVisible) {
@@ -245,31 +244,33 @@ const ContentBody: React.FC<ContentBodyProps> = ({ collapsed, onCollapse }) => {
           }}
         />
       </Header>
-      <Content
-        style={{
-          padding: '30px 50px 0px 50px',
-          minHeight: 280,
-          background: colorBgContainer,
-          borderRadius: borderRadiusLG,
-        }}
-      >
-        <MainBodyHeader>
-          <AvailableBalance>
-            <AvailableBalanceText>Available Balance</AvailableBalanceText>
-            <BalanceAmount>
-              <DollarSign>
-                <DollarSignText>S$</DollarSignText>
-              </DollarSign>
-              <Amount>3,000</Amount>
-            </BalanceAmount>
-          </AvailableBalance>
-          <AddNewCard onClick={handleAddNewCardClick}>
-            <AddIcon src='/icons/add.svg'></AddIcon>
-            <NewCard>New card</NewCard>
-          </AddNewCard>
-        </MainBodyHeader>
-        <Tabs defaultActiveKey='1' items={items} onChange={onChange} />
-      </Content>
+      {selectedKey === '2' && (
+        <Content
+          style={{
+            padding: '30px 50px 0px 50px',
+            minHeight: 280,
+            background: colorBgContainer,
+            borderRadius: borderRadiusLG,
+          }}
+        >
+          <MainBodyHeader>
+            <AvailableBalance>
+              <AvailableBalanceText>Available Balance</AvailableBalanceText>
+              <BalanceAmount>
+                <DollarSign>
+                  <DollarSignText>S$</DollarSignText>
+                </DollarSign>
+                <Amount>3,000</Amount>
+              </BalanceAmount>
+            </AvailableBalance>
+            <AddNewCard onClick={handleAddNewCardClick}>
+              <AddIcon src='/icons/add.svg'></AddIcon>
+              <NewCard>New card</NewCard>
+            </AddNewCard>
+          </MainBodyHeader>
+          <Tabs defaultActiveKey='1' items={items} onChange={onChange} />
+        </Content>
+      )}
       <Modal
         visible={isModalVisible}
         title='Add New Card'

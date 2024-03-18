@@ -26,7 +26,11 @@ const LandingPage: React.FC = () => {
         selectedKey={selectedKey}
         onSelect={handleSelect}
       />
-      <ContentBody collapsed={collapsed} onCollapse={handleCollapse} />
+      <ContentBody
+        collapsed={collapsed}
+        onCollapse={handleCollapse}
+        selectedKey={selectedKey}
+      />
     </Layout>
   );
 };

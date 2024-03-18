@@ -7,6 +7,7 @@ export interface SideBarProps {
 export interface ContentBodyProps {
   collapsed: boolean;
   onCollapse?: (newKey: boolean) => void;
+  selectedKey: string;
 }
 
 export interface CardInfoProps {

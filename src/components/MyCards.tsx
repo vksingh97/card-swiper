@@ -28,7 +28,7 @@ const CardOptionContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 15px 0px 0px 0px;
+  margin: 15px 10px 0px 0px;
   cursor: pointer;
 `;
 
@@ -201,6 +201,8 @@ const MyCards: React.FC<MyCardsProps> = ({
   );
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const [isClicked, setIsCliked] = useState(false);
+
   const transactionData = [
     {
       id: 1,
@@ -271,10 +273,17 @@ const MyCards: React.FC<MyCardsProps> = ({
             isFrozenCard={isFrozen}
           />
           <CardOptions>
-            <CardOptionContainer onClick={() => handleFreezeCard(currentIndex)}>
+            <CardOptionContainer
+              onClick={() => {
+                handleFreezeCard(currentIndex);
+                setIsCliked(!isClicked);
+              }}
+            >
               <CardOptionLogo src='/icons/FreezeCard.svg'></CardOptionLogo>
               <CardOptionText>
-                {isFrozen[currentIndex] ? 'UnFreeze Card' : 'Freeze Card'}
+                {isFrozen[currentIndex] || isClicked
+                  ? 'UnFreeze Card'
+                  : 'Freeze Card'}
               </CardOptionText>
             </CardOptionContainer>
             <CardOptionContainer>
